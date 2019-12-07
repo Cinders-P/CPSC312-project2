@@ -47,4 +47,21 @@ This .exe should be executable on any machine of the same architecture.
 ---
 
 # Demo Examples
+## Success
 
+`search(yaletown).`
+
+`search("wine bar", yaletown).`
+
+`search("wine bar", "vancouver-yaletown", [3,4], 0).`
+
+`search("wine bar", "vancouver-yaletown", [3,4], 4.5).`
+
+`search(restaurants, "vancouver yaletown", 4, 5).`
+
+## Error
+`search(abcdefghijklmnop).`
+
+`search(restaurants, yaletown, [4,5,6], 0).`
+
+`search(restaurants, yaletown, 1, 6).`

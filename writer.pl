@@ -1,9 +1,6 @@
 %%% writer.pl parses Dicts and pretty-prints results to the `stdout` stream
 
-%%% import whatever libraries
 :- use_module(library(lists)).
-
-print_results(json([_, (total=V), _]), _, _) :- format('total: ~a~ndone!', [V]).
 
 % write_list(List) is true if List is a list of anything
 write_list([]).
@@ -12,14 +9,6 @@ write_list([H|T]):-
         write_list(T).
 
 % filter_list(Elems, List, Filtered) is true if FilteredList is a filtered list from List
-%filter_list(_, [], _).
-%filter_list(Keys, [H|T], Filtered) :-
-%	check_delete(Keys, H), filter_list(Keys, T, Filtered).
-%filter_list(Keys, [H|T], Filtered) :-
-%	\+ check_delete(Keys, H), filter_list(Keys, T, [H|Filtered]). 
-
-%check_delete([], Key).
-%check_delete([H|T], Key).
 
 filter_list([], L, L).
 filter_list([H|T], List, Filtered) :-
@@ -38,7 +27,6 @@ get_list(json([H|_]),MinRating, Value) :-
 get_restaurant_list([],_,[]).
 get_restaurant_list([ResH|ResT],MinRating,[JsonH|JsonT]) :-
 	convert_to_restaurant(ResH,MinRating,JsonH),
-        nl,
 	get_restaurant_list(ResT,MinRating,JsonT).
 
 % delete_kv_pair(k, lst, res) returns true if k is deleted from lst
@@ -95,13 +83,10 @@ convert_to_restaurant(json(List),Minrating,restaurant(Basic_info, Review_info,
 	checkrating(Minrating,Final).
 
 checkrating(Minrating,List) :-
-	findkeyrating(Minrating,List,[],Bool,Res),
-	Bool = true,
-	write_list(Res).
+	findkeyrating(Minrating,List,[],true,Res),
+	write_list(Res), nl.
 checkrating(Minrating,List) :-
-	findkeyrating(Minrating,List,[],Bool,_),
-	Bool = false,
-	write_list([]).	
+	findkeyrating(Minrating,List,[],false,_).
 
 findkeyrating(_,[],List,_,List).
 findkeyrating(Minrating,[H|T],List,Bool,Flist) :-

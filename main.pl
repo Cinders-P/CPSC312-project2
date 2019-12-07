@@ -9,12 +9,16 @@ search(Term, Location) :- search(Term, Location, [1,2,3,4], 0).
 search(Term, Location, PriceList, MinRating) :-
   atom_string(Term, TermStr),
   atom_string(Location, LocStr),
+  is_valid_rating(MinRating),
   numbers_to_string(PriceList, PriceStr),
   try_search(TermStr, LocStr, PriceStr, Json),
   get_list(Json,MinRating, _).
 
 %%% Yelp Price Scale: 1=$, 2=$$, 3=$$$, 4=$$$$
 is_valid_price(Num) :- Num >= 1, Num =< 4.
+
+%%% Yelp allows restaurant ratings from 1 to 5.
+is_valid_rating(Num) :- Num >= 0, Num =< 5.
 
 %%% Convert list input into comma separated string
 numbers_to_string([], "").
